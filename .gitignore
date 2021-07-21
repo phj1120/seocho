@@ -1,9 +1,9 @@
 face_detect_project/etc/
 
-face_recognition_profect/crop_img
-face_recognition_profect/etc
-face_recognition_profect/full_img
-face_recognition_profect/Image
+face_recognition_project/crop_img
+face_recognition_project/etc
+face_recognition_project/full_img
+face_recognition_project/Image
 
 image_comparison_project
 
