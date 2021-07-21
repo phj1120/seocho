@@ -1,5 +1,7 @@
 face_detect_project/etc/
+face_detect_project/.spyproject
 
+face_recognition_project/.spyproject
 face_recognition_project/crop_img
 face_recognition_project/etc
 face_recognition_project/full_img
