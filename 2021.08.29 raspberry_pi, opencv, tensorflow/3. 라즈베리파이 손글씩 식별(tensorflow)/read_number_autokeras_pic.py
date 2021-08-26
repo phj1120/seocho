@@ -20,7 +20,7 @@ for file in files:
     cv2.imshow('video', frame)
     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray_img = np.array(gray_img, dtype=np.uint8)
-
+    gray_img = 255 - gray_img
     input_data = gray_img.reshape(1, 28, 28, )
     #print(input_data.shape)
     interpreter.set_tensor(input_details[0]['index'], input_data)

@@ -21,16 +21,13 @@ for file in files:
     cv2.imshow('video', frame)
     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray_img = np.array(gray_img, dtype=np.float32)
-    gray_img = cv2.bitwise_not(gray_img)
+    gray_img = 255 - gray_img
+    gray_img = gray_img/255.0
     
     input_data = gray_img.reshape(1, 28*28, )
-    #input_data = input_data/255.0
-    #print(input_data.shape)
     interpreter.set_tensor(input_details[0]['index'], input_data)
     interpreter.invoke()
-
     output_data = interpreter.get_tensor(output_details[0]['index'])
-
     result = np.argmax(output_data[0])
     print(file, ' -> ',result)
 cv2.destroyAllWindows()

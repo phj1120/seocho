@@ -24,6 +24,7 @@ while True:
         cv2.imshow('video', frame)
         gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         gray_img = np.array(gray_img, dtype=np.float32)
+        gray_img = 255 - gray_img
         
         input_data = gray_img.reshape(1, 28, 28, 1)
         input_data = input_data/255.0
