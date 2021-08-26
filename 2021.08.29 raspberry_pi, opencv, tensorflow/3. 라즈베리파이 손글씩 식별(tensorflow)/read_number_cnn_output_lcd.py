@@ -1,10 +1,6 @@
-#sudo pip3 install rpi_lcd
-
 import cv2
 import numpy as np
 import tflite_runtime.interpreter as tflite
-from gpiozero import LED
-from signal import signal, SIGTERM, SIGHUP, pause
 from rpi_lcd import LCD
 
 lcd = LCD()
