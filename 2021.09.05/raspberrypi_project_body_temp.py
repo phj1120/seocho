@@ -22,8 +22,8 @@ while True:
     distance = distance_sensor.distance * 100
     sleep(1)
     if distance <= 10:
-        my_temperature = mlx.object_temperature
-        if my_temperature >= 35.0:
+        temp = mlx.object_temperature
+        if temp >= 35.0:
             red_led.on()
             green_led.off()
             blue_led.off()
@@ -31,7 +31,7 @@ while True:
             buzzer.on()
         
             lcd.text("    non-pass", 1)
-            lcd.text(f'  Temp : {my_temperature:.1f}', 2)
+            lcd.text(f'  Temp : {temp:.1f}', 2)
         else:
             red_led.off()
             green_led.on()
@@ -40,7 +40,7 @@ while True:
             buzzer.off()
                     
             lcd.text("      pass", 1)
-            lcd.text(f'  Temp : {my_temperature:.1f}', 2)
+            lcd.text(f'  Temp : {temp:.1f}', 2)
     else:
         red_led.off()
         green_led.off()
