@@ -3,15 +3,14 @@ from gpiozero import DistanceSensor, LED, Buzzer
 from rpi_lcd import LCD
 from time import sleep
 
-def my_status(buzzer=False, red_led=False, green_led=False, blue_led=False, lcd_text=['','']):
-    global lcd
-    if buzzer: buzzer.on()
+def my_status(buzzer_state=False, red_led_state=False, green_led_state=False, blue_led_state=False, lcd_text=['','']):
+    if buzzer_state: buzzer.on()
     else: buzzer.off()
-    if red_led: red_led.on()
+    if red_led_state: red_led.on()
     else: red_led.off()
-    if green_led: green_led.on()
+    if green_led_state: green_led.on()
     else: green_led.off()
-    if blue_led: blue_led.on()
+    if blue_led_state: blue_led.on()
     else: blue_led: blue_led.off()
     lcd.text(lcd_text[0], 1)
     lcd.text(lcd_text[1], 2)
@@ -37,10 +36,10 @@ while True:
         temp = mlx.object_temperature
         # 일정 온도 이상인 경우
         if temp >= 35.0:
-            my_status(buzzer=True, red_led=True, lcd_text=['    non-pass', f'  Temp : {temp:.1f}'])
+            my_status(buzzer_state=True, red_led_state=True, lcd_text=['    non-pass', f'  Temp : {temp:.1f}'])
        # 일정 온도 이하인 경우
         else:
-            my_status(green_led=True, lcd_text=['      pass', f'  Temp : {temp:.1f}'])
+            my_status(green_led_state=True, lcd_text=['      pass', f'  Temp : {temp:.1f}'])
     # 일정 거리 안에 물체가 없을 경우
     else:
-        my_status(blue_led=True, lcd_text=['      wait', f'Distance : {distance:.1f}'])
+        my_status(blue_led_state=True, lcd_text=['      wait', f'Distance : {distance:.1f}'])
