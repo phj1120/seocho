@@ -1,9 +1,32 @@
+import board, adafruit_mlx90614
+from gpiozero import LED, Buzzer
+from rpi_lcd import LCD
+from time import sleep
+
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 import numpy as np
 import cv2
 import os
+
+def my_status(buzzer_state=False, red_led_state=False, green_led_state=False, blue_led_state=False, lcd_text=['','']):
+    buzzer.on() if buzzer_state else buzzer.off()
+    red_led.on() if red_led_state else red_led.off()
+    green_led.on() if green_led_state else green_led.off()
+    blue_led.on() if blue_led_state else blue_led.off()
+    lcd.text(lcd_text[0], 1)
+    lcd.text(lcd_text[1], 2)
+
+i2c = board.I2C()
+mlx = adafruit_mlx90614.MLX90614(i2c)
+lcd = LCD()
+
+buzzer = Buzzer(23)
+red_led = LED(17)
+green_led = LED(27)
+blue_led = LED(22)
+
 print('start')
 my_path = './'
 # 얼굴 인식 모델 로드
@@ -60,6 +83,16 @@ while True:
 
             # 얼굴 추출이 됐을 경우 ( 가까이 간 경우 오류 발생 )
             if np.any(face):
+                # 온도 체크 시작
+                temp = mlx.object_temperature
+                # 일정 온도 이상인 경우
+                if temp >= 35.0:
+                    my_status(buzzer_state=True, red_led_state=True, lcd_text=['    non-pass', f'  Temp : {temp:.1f}'])
+               # 일정 온도 이하인 경우
+                else:
+                    my_status(green_led_state=True, lcd_text=['      pass', f'  Temp : {temp:.1f}'])
+                
+                
                 face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
                 face = cv2.resize(face, (244, 244))
                 face = img_to_array(face)
@@ -68,7 +101,7 @@ while True:
 
                 # mask와 withoutMask 에 각각의 확률 예측
                 (mask, withoutMask) = model.predict(face)[0]
-
+                
                 # 화면에 표시할 라벨 저장 및 색상 지정
                 label = "Mask" if mask > withoutMask else "No Mask"
                 color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
@@ -80,7 +113,10 @@ while True:
                 cv2.putText(img, label, (startX, startY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
                 # 이미지에 사각형 추가
                 cv2.rectangle(img, (startX, startY), (endX, endY), color, 2)
-
+        # 일정 거리 안에 물체가 없을 경우
+        else:
+            my_status(blue_led_state=True, lcd_text=['      wait', '     no face  '])
+            
         cv2.imshow("Output", img)
         k = cv2.waitKey(30) & 0xff
         if k == 27:
