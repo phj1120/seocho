@@ -3,7 +3,7 @@ import os
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-# import tflite_runtime.interpreter as tflite
+import tflite_runtime.interpreter as tflite
 import tensorflow as tf
 import numpy as np
 
@@ -12,7 +12,8 @@ cascPath = os.path.dirname(
     cv2.__file__) + "/data/haarcascade_frontalface_alt2.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
-interpreter = tf.lite.Interpreter(model_path='mask_detector_224.tflite')
+# interpreter = tf.lite.Interpreter(model_path='mask_detector_224.tflite')
+interpreter = tflite.Interpreter(model_path='mask_detector_224.tflite')
 interpreter.allocate_tensors()
 
 input_details = interpreter.get_input_details()

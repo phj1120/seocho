@@ -15,8 +15,8 @@ def my_status(buzzer_state=False, red_led_state=False, green_led_state=False, bl
     red_led.on() if red_led_state else red_led.off()
     green_led.on() if green_led_state else green_led.off()
     blue_led.on() if blue_led_state else blue_led.off()
-    lcd.text(lcd_text[0], 1)
-    lcd.text(lcd_text[1], 2)
+    lcd.text(f'{lcd_text[0]:^16s}', 1)
+    lcd.text(f'{lcd_text[1]:^16s}', 2)
 
 i2c = board.I2C()
 mlx = adafruit_mlx90614.MLX90614(i2c)
@@ -35,7 +35,7 @@ weightsPath = os.path.join(my_path, 'model/res10_300x300_ssd_iter_140000.caffemo
 net = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # 마스크 착용 여부 판단 모델 로드
-model_path = os.path.join(my_path, 'model/mask_detector.model')
+model_path = os.path.join(my_path, 'model/mask_detector_224.model')
 model = load_model(model_path)
 
 cap = cv2.VideoCapture(0)
@@ -82,18 +82,8 @@ while True:
 
         # 얼굴 추출이 됐을 경우 ( 가까이 간 경우 오류 발생 )
         if np.any(face):
-            # 온도 체크 시작
-            temp = mlx.object_temperature
-            # 일정 온도 이상인 경우
-            if temp >= 35.0:
-                my_status(buzzer_state=True, red_led_state=True, lcd_text=['    non-pass', f'  Temp : {temp:.1f}'])
-           # 일정 온도 이하인 경우
-            else:
-                my_status(green_led_state=True, lcd_text=['      pass', f'  Temp : {temp:.1f}'])
-
-
             face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
-            face = cv2.resize(face, (244, 244))
+            face = cv2.resize(face, (224, 224))
             face = img_to_array(face)
             face = preprocess_input(face)
             face = np.expand_dims(face, axis=0)
@@ -112,9 +102,23 @@ while True:
             cv2.putText(img, label, (startX, startY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
             # 이미지에 사각형 추가
             cv2.rectangle(img, (startX, startY), (endX, endY), color, 2)
+            
+            # 온도 체크 시작
+            temp = mlx.object_temperature
+            # 
+            if mask < withoutMask:
+                my_status(buzzer_state=True, red_led_state=True, lcd_text=['non-pass', f'No Mask'])
+            # 일정 온도 이상인 경우
+            elif temp >= 35.0:
+                my_status(buzzer_state=True, red_led_state=True, lcd_text=['non-pass', f'Temp : {temp:.1f}'])
+            # 일정 온도 이하인 경우
+            else:
+                my_status(green_led_state=True, lcd_text=['pass', f'Temp : {temp:.1f}'])
+        else:
+            my_status(blue_led_state=True, lcd_text=['wait', 'Come Closer '])
     # 일정 거리 안에 물체가 없을 경우
     else:
-        my_status(blue_led_state=True, lcd_text=['      wait', '     no face  '])
+        my_status(blue_led_state=True, lcd_text=['wait', 'no face'])
 
     cv2.imshow("Output", img)
     k = cv2.waitKey(30) & 0xff
