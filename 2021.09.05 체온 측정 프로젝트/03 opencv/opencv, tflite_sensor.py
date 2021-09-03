@@ -64,20 +64,19 @@ while True:
     if np.any(faces):
         for (x, y, w, h) in faces:
             face_frame = frame[y:y + h, x:x + w]
-            face_frame = cv2.cvtColor(face_frame, cv2.COLOR_BGR2RGB)
             face_frame = cv2.resize(face_frame, (224, 224))
-            face_frame = img_to_array(face_frame)
-            face_frame = np.expand_dims(face_frame, axis=0)
-            face_frame = preprocess_input(face_frame)
             area = w*h
             if largest_face_area < area:
                 largest_face_area = area
                 largest_face_frame = face_frame
                 largest_face_box = faces
-                # print(face_frame, face_frame.shape)
         if largest_face_area > 40000:
-            (x, y, w, h) = largest_face_box[0]
-            interpreter.set_tensor(input_details[0]['index'], largest_face_frame)
+            face_frame = cv2.cvtColor(largest_face_frame, cv2.COLOR_BGR2RGB)
+            face_frame = img_to_array(face_frame)
+            face_frame = np.expand_dims(face_frame, axis=0)
+            face_frame = preprocess_input(face_frame)
+            
+            interpreter.set_tensor(input_details[0]['index'], face_frame)
             interpreter.invoke()
 
             output_data = interpreter.get_tensor(output_details[0]['index'])
@@ -87,6 +86,8 @@ while True:
             label = "Mask" if mask > withoutMask else "No Mask"
             color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
             label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
+            
+            (x, y, w, h) = largest_face_box[0]
             cv2.putText(frame, label, (x, y - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
             cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
@@ -95,16 +96,16 @@ while True:
             temp = mlx.object_temperature
             # 
             if mask < withoutMask:
-                my_status(buzzer_state=True, red_led_state=True, lcd_text=['non-pass', f'No Mask'])
+                my_status(buzzer_state=True, red_led_state=True, lcd_text=['No Pass', f'No Mask'])
             # 일정 온도 이상인 경우
             elif temp >= 35.0:
-                my_status(buzzer_state=True, red_led_state=True, lcd_text=['non-pass', f'Temp : {temp:.1f}'])
+                my_status(buzzer_state=True, red_led_state=True, lcd_text=['No Pass', f'Temp : {temp:.1f}'])
             # 일정 온도 이하인 경우
             else:
-                my_status(green_led_state=True, lcd_text=['pass', f'Temp : {temp:.1f}'])
+                my_status(green_led_state=True, lcd_text=['Pass', f'Temp : {temp:.1f}'])
             print(largest_face_area)
         else:
-            my_status(blue_led_state=True, lcd_text=['wait', 'Come Closer '])
+            my_status(blue_led_state=True, lcd_text=['Wait', 'Come Closer '])
     else:
         my_status(blue_led_state=True, lcd_text=['Wait', 'No Face'])
     # Display the resulting frame

@@ -107,18 +107,18 @@ while True:
             temp = mlx.object_temperature
             # 
             if mask < withoutMask:
-                my_status(buzzer_state=True, red_led_state=True, lcd_text=['non-pass', f'No Mask'])
+                my_status(buzzer_state=True, red_led_state=True, lcd_text=['No Pass', f'No Mask'])
             # 일정 온도 이상인 경우
             elif temp >= 35.0:
-                my_status(buzzer_state=True, red_led_state=True, lcd_text=['non-pass', f'Temp : {temp:.1f}'])
+                my_status(buzzer_state=True, red_led_state=True, lcd_text=['No Pass', f'Temp : {temp:.1f}'])
             # 일정 온도 이하인 경우
             else:
-                my_status(green_led_state=True, lcd_text=['pass', f'Temp : {temp:.1f}'])
-        else:
-            my_status(blue_led_state=True, lcd_text=['wait', 'Come Closer '])
+                my_status(green_led_state=True, lcd_text=['Pass', f'Temp : {temp:.1f}'])
+    else:
+        my_status(blue_led_state=True, lcd_text=['Wait', 'Come Closer '])
     # 일정 거리 안에 물체가 없을 경우
     else:
-        my_status(blue_led_state=True, lcd_text=['wait', 'no face'])
+        my_status(blue_led_state=True, lcd_text=['wait', 'No Face'])
 
     cv2.imshow("Output", img)
     k = cv2.waitKey(30) & 0xff
