@@ -118,7 +118,7 @@ while True:
         my_status(blue_led_state=True, lcd_text=['Wait', 'Come Closer '])
     # 일정 거리 안에 물체가 없을 경우
     else:
-        my_status(blue_led_state=True, lcd_text=['wait', 'No Face'])
+        my_status(blue_led_state=True, lcd_text=['Wait', 'No Face'])
 
     cv2.imshow("Output", img)
     k = cv2.waitKey(30) & 0xff
