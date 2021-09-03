@@ -30,12 +30,12 @@ blue_led = LED(22)
 print('start')
 my_path = './'
 # 얼굴 인식 모델 로드
-prototxtPath = os.path.join(my_path, 'model/deploy.prototxt')
-weightsPath = os.path.join(my_path, 'model/res10_300x300_ssd_iter_140000.caffemodel')
+prototxtPath = os.path.join(my_path, '../99 model/deploy.prototxt')
+weightsPath = os.path.join(my_path, '../99 model/res10_300x300_ssd_iter_140000.caffemodel')
 net = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # 마스크 착용 여부 판단 모델 로드
-model_path = os.path.join(my_path, 'model/mask_detector_224.model')
+model_path = os.path.join(my_path, '../99 model/mask_detector_224.model')
 model = load_model(model_path)
 
 cap = cv2.VideoCapture(0)

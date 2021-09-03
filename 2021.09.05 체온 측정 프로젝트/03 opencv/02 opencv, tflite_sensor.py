@@ -38,7 +38,7 @@ cascPath = os.path.dirname(
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 # 마스크 착용 여부 확인을 위한 모델 로드
-interpreter = tflite.Interpreter(model_path='mask_detector_224.tflite')
+interpreter = tflite.Interpreter(model_path='../99 model/mask_detector_224.tflite')
 interpreter.allocate_tensors()
 
 input_details = interpreter.get_input_details()
@@ -62,8 +62,9 @@ while True:
     if np.any(faces):
         # faces 에서 좌표 가져옴
         for (x, y, w, h) in faces:
-            # 가장 큰 얼굴 찾기
+            # 좌표 이용해서 얼굴 자름
             face_frame = frame[y:y + h, x:x + w]
+            # 가장 큰 얼굴 찾기
             area = w*h
             if largest_face_area < area:
                 largest_face_area = area
@@ -72,7 +73,7 @@ while True:
         print(largest_face_area)
         # 가장 큰 얼굴의 값이 일정 값 이상인 경우
         if largest_face_area > 40000:
-            # 좌표 이용해서 얼굴 자르고 이미지 처리
+            # 마스크 착용 여부 예측을 위한 이미지 처리
             (x, y, w, h) = largest_face_box[0]
             face_frame = cv2.resize(largest_face_frame, (224, 224))
             face_frame = cv2.cvtColor(face_frame, cv2.COLOR_BGR2RGB)

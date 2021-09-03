@@ -1,27 +1,16 @@
 import cv2
 import os
 from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-# import tflite_runtime.interpreter as tflite
-import tensorflow as tf
 import numpy as np
-
 
 cascPath = os.path.dirname(
     cv2.__file__) + "/data/haarcascade_frontalface_alt2.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
+model = load_model("../99 model/mask_detector_224.model")
 
-interpreter = tf.lite.Interpreter(model_path='mask_detector_224.tflite')
-# interpreter = tflite.Interpreter(model_path='mask_detector_224.tflite')
-interpreter.allocate_tensors()
-
-input_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details()
-
-print(input_details)
-#
 video_capture = cv2.VideoCapture(0)
-
 while True:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
@@ -49,17 +38,12 @@ while True:
                 largest_face_area = area
                 largest_face_frame = face_frame
                 largest_face_box = faces
-                # print(face_frame, face_frame.shape)
 
         if largest_face_area > 40000:
             (x, y, w, h) = largest_face_box[0]
-            interpreter.set_tensor(input_details[0]['index'], largest_face_frame)
-            interpreter.invoke()
+            pred = model.predict(largest_face_frame)
 
-            output_data = interpreter.get_tensor(output_details[0]['index'])
-            # print(output_data[0])
-            (mask, withoutMask) = output_data[0]
-
+            (mask, withoutMask) = pred[0]
             label = "Mask" if mask > withoutMask else "No Mask"
             color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
             label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
