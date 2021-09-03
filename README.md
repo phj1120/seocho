@@ -54,3 +54,30 @@
 
 ### 12주차
 2021.10.03
+
+
+# 설치
+## 1. Tensorflow
+
+```bash
+pip3 install --upgrade https://github.com/lhelontra/tensorflow-on-arm/releases/download/v2.4.0/tensorflow-2.4.0-cp37-none-linux_armv7l.whl
+```
+
+## 2. tflite Interpreter
+
+```bash
+pip3 install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-linux_armv7l.whl
+```
+
+## 3. OpenCV
+
+```bash
+sudo apt-get update && upgrade
+# sudo apt-get install python3-dev, libatlas-base-dev, libhdf5-dev, libhdf5-serial-dev
+sudo apt-get install python3-dev
+sudo apt-get install libatlas-base-dev
+sudo apt-get install libhdf5-dev 
+sudo apt-get install libhdf5-serial-dev
+pip3 install opencv-contrib-python
+pip3 install -U numpy
+```
