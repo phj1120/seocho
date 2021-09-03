@@ -63,6 +63,7 @@ while True:
         # faces 에서 좌표 가져옴
         for (x, y, w, h) in faces:
             # 가장 큰 얼굴 찾기
+            face_frame = frame[y:y + h, x:x + w]
             area = w*h
             if largest_face_area < area:
                 largest_face_area = area
@@ -73,9 +74,8 @@ while True:
         if largest_face_area > 40000:
             # 좌표 이용해서 얼굴 자르고 이미지 처리
             (x, y, w, h) = largest_face_box[0]
-            face_frame = frame[y:y + h, x:x + w]
-            face_frame = cv2.resize(face_frame, (224, 224))
-            face_frame = cv2.cvtColor(largest_face_frame, cv2.COLOR_BGR2RGB)
+            face_frame = cv2.resize(largest_face_frame, (224, 224))
+            face_frame = cv2.cvtColor(face_frame, cv2.COLOR_BGR2RGB)
             face_frame = img_to_array(face_frame)
             face_frame = np.expand_dims(face_frame, axis=0)
             face_frame = preprocess_input(face_frame)
