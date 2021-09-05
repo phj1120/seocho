@@ -21,6 +21,8 @@ buzzer = Buzzer(23)
 red_led = LED(17)
 green_led = LED(27)
 blue_led = LED(22)
+temps = [0,0,0]
+my_temp = 0
 
 while True:
     # 거리 측정
@@ -28,15 +30,23 @@ while True:
     # 1ms 대기
     sleep(1)
     # 물체가 일정 거리 안에 들어 올 경우
-    if distance <= 10:
+    if distance <= 30 and distance >= 20:
+    # if True: 
         # 온도 체크 시작
-        temp = mlx.object_temperature
+        for temp in temps:
+            temp = mlx.object_temperature
+            my_temp += temp
+            print(temp, my_temp)
+            sleep(1)
+        
         # 일정 온도 이상인 경우
-        if temp >= 35.0:
+        if my_temp / 3 >= 33.0:
             my_status(buzzer_state=True, red_led_state=True, lcd_text=['    non-pass', f'  Temp : {temp:.1f}'])
+            my_temp = 0
        # 일정 온도 이하인 경우
         else:
             my_status(green_led_state=True, lcd_text=['      pass', f'  Temp : {temp:.1f}'])
+            my_temp = 0
     # 일정 거리 안에 물체가 없을 경우
     else:
         my_status(blue_led_state=True, lcd_text=['      wait', f'Distance : {distance:.1f}'])
