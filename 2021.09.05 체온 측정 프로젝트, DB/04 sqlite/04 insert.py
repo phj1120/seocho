@@ -13,4 +13,3 @@ cur.execute(sql,("36.5", "NORMAL","20210905135535"))
 con.commit()
 
 con.close()
-40

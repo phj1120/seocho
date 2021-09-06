@@ -3,6 +3,10 @@
 # fetchone 하나만 로드
 
 
+#fetchall
+#fetchmany
+#fetchone
+
 import sqlite3
 
 con = sqlite3.connect("test.db")
