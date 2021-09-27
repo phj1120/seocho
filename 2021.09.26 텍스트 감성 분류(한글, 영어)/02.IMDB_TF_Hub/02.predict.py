@@ -4,8 +4,8 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.utils import CustomObjectScope
 
 # TF Hub 모델 불러오기
-hub_model  = "https://tfhub.dev/google/nnlm-en-dim50/2"
-hub_layer = hub.KerasLayer(hub_model, input_shape=[], dtype=tf.string, trainable=True)
+embedding  = "https://tfhub.dev/google/nnlm-en-dim50/2"
+hub_layer = hub.KerasLayer(embedding, input_shape=[], dtype=tf.string, trainable=True)
 
 # 모델 불러오기
 loaded_model = load_model("../98.models/imdb/best_model_nnlm-en-dim50_v2.h5", custom_objects={'KerasLayer': hub_layer})

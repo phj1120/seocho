@@ -2,6 +2,8 @@ from tensorflow.keras.datasets import imdb
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM, Embedding
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+import matplotlib.pyplot as plt
+
 
 # 단어제한(10,000개)을 두고 데이터셋 새로 불러오기
 vocab_size = 10000

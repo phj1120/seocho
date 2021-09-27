@@ -1,4 +1,14 @@
 # 2021.09.26
+## 환경 구성
+```bash
+pip install tensorflow
+pip install tensorflow_datasets
+pip install matplotlib
+pip install pandas
+pip install tensorflow_hub
+pip install eunjeon
+```
+
 ## 코드 설명
 ### 01 IMDB
 * tensorflow.keras.datasets 를 이용해 데이터셋 로드해 간단하게 과정 숙지
@@ -6,6 +16,7 @@
 
 ### 02 IMDB_TF_HUB
 * tensorflow_hub 이용해 훈련
+* 예측 결과 이상하게 나오면 다시 훈련해보기
 
 ### 03 NaverMovie
 * 네이버 영화 리뷰 감성 분류

@@ -1,4 +1,3 @@
-import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import tensorflow_hub as hub
@@ -18,18 +17,20 @@ print(y_train[:10])
 # 검증 데이터셋 준비하기
 x_val = x_train[:10000]
 partial_x_train = x_train[10000:]
+
 y_val = y_train[:10000]
 partial_y_train = y_train[10000:]
 
 # 검증 데이터셋 준비하기
-hub_model = "https://tfhub.dev/google/nnlm-en-dim50/2"
-hub_layer = hub.KerasLayer(hub_model, input_shape=[], dtype=tf.string, trainable=True)
+model = "https://tfhub.dev/google/nnlm-en-dim50/2"
+hub_layer = hub.KerasLayer(model, input_shape=[], dtype=tf.string, trainable=True)
 
 # 모델 생성
 model = tf.keras.Sequential()
 model.add(hub_layer)
 model.add(tf.keras.layers.Dense(16, activation='relu'))
 model.add(tf.keras.layers.Dense(1))
+
 model.summary()
 
 # 모델 컴파일
@@ -43,11 +44,11 @@ es = EarlyStopping(monitor="val_loss", mode="min", verbose=1, patience=4)
 mc = ModelCheckpoint("../98.models/imdb/best_model_nnlm-en-dim50_v2.h5", monitor="val_acc", mode="max", verbose=1, save_best_only=True)
 
 history = model.fit(
-    x_train, y_train,
+    partial_x_train, partial_y_train,
     epochs=40,
     batch_size=512,
     callbacks=[es, mc],
-    validation_data=(x_test, y_test),
+    validation_data=(x_val, y_val),
     verbose=1
 )
 

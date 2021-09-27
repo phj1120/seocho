@@ -1,6 +1,5 @@
 import urllib.request
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 
 # 데이터셋 불러오기
