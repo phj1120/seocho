@@ -7,6 +7,7 @@ pip install matplotlib
 pip install pandas
 pip install tensorflow_hub
 pip install eunjeon
+    visual studio C++ buildtool 14.0 이상 필요
 ```
 
 ## 코드 설명
