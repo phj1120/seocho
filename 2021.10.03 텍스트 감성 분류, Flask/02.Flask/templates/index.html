@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-    <!--    반응형 화면을 만들기 위해(폰 화면이 크기가 다르니까)  -->
-        <meta name="viewport", content="width=device-width, initial-scale=1">
-        <title>Hello</title>
+        <meta charset='utf-8'>
+        <meta name="viewport" content="width=devide-width, initial-scale=1">
+        <title>hello</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.1/css/bootstrap.min.css" integrity="sha512-6KY5s6UI5J7SVYuZB4S/CZMyPylqyyNZco376NM2Z8Sb8OxEdp02e1jkKk/wZxIEmjQ6DRCEBhni+gpr9c4tvA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <style>
             body {
@@ -13,29 +12,27 @@
         </style>
     </head>
     <body>
-        <div class = "container">
+        <div class="container">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-10">
-                            <input type ="text" class="form-control" id="text">
+                            <input type="text" class="form-control" id="text">
                         </div>
                         <div class="col-md-2">
-<!--                            클래스는 그룹, 아이디는 개별 속성을 나타낼때   -->
-                            <button type ="button" class="btn btn-primary" id="btnConfirm">확인</button>
+                            <button type="button" class="btn btn-primary" id="btnConfirm">확인</button>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-12">
-
-                            </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="alertModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -50,38 +47,35 @@
             </div>
         </div>
 
-<!--            jqurey, popper, bootstrap   -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js" integrity="sha512-nnzkI2u2Dy6HMnzMIkh7CPd1KX445z38XIu4jG1jGw7x5tSL3VBjE44dY4ihMU1ijAQV930SPM12cCFrB18sVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.1/js/bootstrap.min.js" integrity="sha512-ewfXo9Gq53e1q1+WDTjaHAGZ8UvCWq0eXONhwDuIoaH8xz2r96uoAYaQCm1oQhnBfRXrvJztNXFsTloJfgbL5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
-            $('#btnConfirm').on('click', function () {
+            $('#btnConfirm').on('click', function() {
                 let text_value = $('#text').val();
 
                 if (!text_value) {
                     alert('내용을 입력하세요');
-                    // $('#alertModal').show();
-                }else {
-                    //웹 페이지에서 f12 콘솔에서 확인
-                    // console.log(text);
+                    //$('#alertModal').show();
+                } else {
+                    //console.log(text_value);
                     $.ajax({
                         url: 'http://127.0.0.1:5000/inference',
-                        // async: true
                         type: 'post',
-                        data: {
-                            text: text_value
-                        },
+                        //async: true,
                         dataType: 'json',
-                        // beforeSend: function (jqXHR){},
-                        success: function (res) {
-                            console.log(res)
+                        data: {
+                            text: text_value,
                         },
-                        // error: function (jqXHR) {},
-                        // complete: function (jqXHR){},
-                    })
+                        //beforeSend: function(jqXHR) {},
+                        success: function(res) {
+                            console.log(res);
+                        },
+                        //error: function(jqXHR) {},
+                        //complete: function(jqXHR) {},
+                    });
                 }
-
             });
         </script>
     </body>
