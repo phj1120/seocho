@@ -51,3 +51,4 @@ x_train_encoded = np.array(x_train_encoded, dtype="object")
 x_test_encoded = np.array(x_test_encoded, dtype="object")
 np.save("../99.data/NaverMovieReview/x_train_encoded.npy", x_train_encoded, allow_pickle=True)
 np.save("../99.data/NaverMovieReview/x_test_encoded.npy", x_test_encoded, allow_pickle=True)
+
