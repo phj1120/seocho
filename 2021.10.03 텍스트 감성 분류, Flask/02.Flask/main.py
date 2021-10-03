@@ -77,30 +77,45 @@ jQuery
 
 # 랜더 템플릿
 # 폴더를 따로 만들어 두고 거기서 파일을 불러옴
+
+
+x_train_tokenized = np.load("ns_x_train_tokenized.npy", allow_pickle=True)
+stopwords = ["도", "는", "다", "의", "가", "이", "은", "한", "에", "하", "고", "을", "를", "인", "듯", "과", "와", "네", "들", "듯", "지", "임", "게"]
+model = load_model("best_model_GRU.h5")
+
+vocab_size = 21133
+tokenizer = Tokenizer(vocab_size, oov_token="OOV")
+tokenizer.fit_on_texts(x_train_tokenized)
+
+app = Flask(__name__)
+
+
+def predict(text):
+    tokenized = mecab.parse(text)
+    tokenized = [word for word in tokenized if not word in stopwords]
+    encoded = tokenizer.texts_to_sequences([tokenized])
+    padded = pad_sequences(encoded, maxlen=80)
+    score = float(model.predict(padded))
+    return score
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
-@app.route("/test")
-def test():
-    return "test"
-
-
 @app.route("/inference", methods=["POST"])
 def inference():
     text = request.form["text"]
-    print(text)
+    #print(f"text: {text}")
+
+    # 추론
+    score = predict(text)
 
     return jsonify(
-        score=30.86,
+        score=score,
     )
 
 
-def inference():
-    pass
-
-
 if __name__ == "__main__":
-    # 코드가 바뀌면 재실행
     app.run(debug=True)
