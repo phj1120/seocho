@@ -1,3 +1,5 @@
+## dlib 사용을 위해 콘다 환경에서 해야함
+
 ```bash
 pip install tqdm
 pip install beautifulSoup4
