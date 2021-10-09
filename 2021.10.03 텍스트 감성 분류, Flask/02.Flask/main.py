@@ -24,7 +24,8 @@ from flask import Flask, render_template, jsonify, request
 x_train_tokenized = np.load("../99.data/NaverShoppingReview/x_train_tokenized.npy", allow_pickle=True)
 stopwords = ["도", "는", "다", "의", "가", "이", "은", "한", "에", "하", "고", "을", "를", "인", "듯", "과", "와", "네", "들", "듯", "지",
              "임", "게"]
-model = load_model("../98.models/best_model_GRU.h5")
+model = load_model("../98.models/NaverShoppingReview/best_model_GRU.h5")
+# model = load_model("../98.models/NaverShoppingReview/best_model_LSTM.h5")
 
 mecab = MeCab.Tagger()
 

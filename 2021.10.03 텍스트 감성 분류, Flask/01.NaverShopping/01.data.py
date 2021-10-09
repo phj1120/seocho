@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 # 네이버 쇼핑 리뷰 다운로드
-# urllib.request.urlretrieve("https://raw.githubusercontent.com/bab2min/corpus/master/sentiment/naver_shopping.txt",
-#                            filename="naver_shopping.txt")
+urllib.request.urlretrieve("https://raw.githubusercontent.com/bab2min/corpus/master/sentiment/naver_shopping.txt",
+                           filename="naver_shopping.txt")
 
 # 가공이 용이하도록 names 붙여줌
 data = pd.read_table("naver_shopping.txt", names=["평점", "리뷰"])
