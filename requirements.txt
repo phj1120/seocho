@@ -36,6 +36,7 @@ lxml==4.6.3
 Markdown==3.3.4
 MarkupSafe==2.0.1
 matplotlib==3.4.3
+mecab-python @ file:///C:/mecab_python-0.996_ko_0.9.2_msvc-cp38-cp38-win_amd64.whl
 numpy==1.19.5
 oauthlib==3.1.1
 opencv-python==4.5.3.56

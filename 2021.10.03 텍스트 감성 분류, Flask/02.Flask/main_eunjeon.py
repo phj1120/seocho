@@ -1,13 +1,5 @@
-# Mecab 설치 과정
-# mecab-ko-msvc를 설치
-# mecab-ko-dic-msvc를 설치
-# 실행 환경에 맞는 최신버전을 다운로드
-# pip install <다운로드한 whl 파일>
-# 설명 및 다운로드
-# https://www.notion.so/sung2ne/Windows-10-Mecab-2-67e4b394555d4565b8269af6c096153b
-# 깃 허브
-# https://github.com/Pusnow/mecab-python-msvc
-# mecab 폴더 삭제 하면 실행 안됨
+# pip install eunjeon
+# visual studio build tool 14.0 필요
 
 # set FLASK_APP = main 윈도우
 #  FLASK_APP = main 윈도우
@@ -17,7 +9,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-import MeCab
+from eunjeon import Mecab
 
 from flask import Flask, render_template, jsonify, request
 
@@ -26,7 +18,7 @@ stopwords = ["도", "는", "다", "의", "가", "이", "은", "한", "에", "하
              "임", "게"]
 model = load_model("../98.models/best_model_GRU.h5")
 
-mecab = MeCab.Tagger()
+mecab = Mecab()
 
 vocab_size = 21133
 tokenizer = Tokenizer(vocab_size, oov_token="OOV")
@@ -36,7 +28,8 @@ app = Flask(__name__)
 
 
 def predict(text):
-    tokenized = mecab.parse(text)
+    tokenized = mecab.morphs(text)
+    # tokenized = mecab.parse(text)
     tokenized = [word for word in tokenized if not word in stopwords]
     encoded = tokenizer.texts_to_sequences([tokenized])
     padded = pad_sequences(encoded, maxlen=80)
