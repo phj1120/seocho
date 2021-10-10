@@ -21,7 +21,7 @@ model = load_model("../98.models/NaverShoppingReview/best_model_GRU.h5")
 
 mecab = Mecab()
 
-vocab_size = 21133
+vocab_size = 21022
 tokenizer = Tokenizer(vocab_size, oov_token="OOV")
 tokenizer.fit_on_texts(x_train_tokenized)
 
@@ -55,4 +55,4 @@ def inference():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
