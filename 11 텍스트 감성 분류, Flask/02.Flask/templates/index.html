@@ -60,7 +60,8 @@
                 } else {
                     //console.log(text_value);
                     $.ajax({
-                        url: 'http://127.0.0.1:5000/inference',
+                        // main.py 실행 시 나오는 주소로 바꾸기
+                        url: 'http://172.131.76.192:5000/inference',
                         type: 'post',
                         //async: true,
                         dataType: 'json',
